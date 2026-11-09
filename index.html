@@ -138,7 +138,19 @@ footer{padding-block:28px;color:var(--muted);font-size:13px;text-align:center}
     if(dig.length<10){err.textContent="Digite o WhatsApp com DDD.";return}
     if(!$("ok").checked){err.textContent="Aceite para receber o material.";return}
     err.textContent="";
-    /* Produção: enviar os dados ao formulário do RD Station (campos: nome, email, whatsapp, empresa, cargo, base, canal, utm_campaign) */
+    var RD_API_KEY="6ddcf17c1617f18d0141719821ed7b2e";
+    var RD_ID="lp-sustos-incorporadoras-novembro-26";
+    var payload={event_type:"CONVERSION",event_family:"CDP",payload:{
+      conversion_identifier:RD_ID,
+      email:em,name:$("nome").value.trim(),personal_phone:dig,
+      company_name:$("emp").value.trim(),job_title:$("cargo").value,
+      cf_base:$("h-base").value,cf_canal:$("h-canal").value,cf_utm_campaign:$("h-camp").value,
+      legal_bases:[{category:"communications",type:"consent",status:"granted"}]}};
+    try{
+      if(RD_API_KEY.indexOf("COLE_")!==0){
+        fetch("https://api.rd.services/platform/conversions?api_key="+RD_API_KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),keepalive:true}).catch(function(){});
+      }
+    }catch(x){}
     $("state-form").hidden=true;$("state-ok").hidden=false;
   });
 })();

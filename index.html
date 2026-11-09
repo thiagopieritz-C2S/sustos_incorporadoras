@@ -127,6 +127,9 @@ footer{padding-block:28px;color:var(--muted);font-size:13px;text-align:center}
 (function(){
   var q=new URLSearchParams(location.search||"");
   var $=function(i){return document.getElementById(i)};
+  var RD_KEY="6ddcf17c1617f18d0141719821ed7b2e",leadEmail="";
+  function rdEvent(id,email){try{fetch("https://api.rd.services/platform/conversions?api_key="+RD_KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({event_type:"CONVERSION",event_family:"CDP",payload:{conversion_identifier:id,email:email}}),keepalive:true}).catch(function(){})}catch(x){}}
+  $("dl").addEventListener("click",function(){if(leadEmail)rdEvent("lp-sustos-baixou-material",leadEmail)});
   $("h-base").value=q.get("base")||"";$("h-canal").value=q.get("canal")||"";$("h-camp").value=q.get("utm_campaign")||"sustos-novembro-26";
   ["top","top2"].forEach(function(id){$(id).addEventListener("click",function(e){e.preventDefault();$("form-card").scrollIntoView({behavior:"smooth",block:"center"});$("nome").focus()})});
   $("f").addEventListener("submit",function(e){
@@ -151,6 +154,7 @@ footer{padding-block:28px;color:var(--muted);font-size:13px;text-align:center}
         fetch("https://api.rd.services/platform/conversions?api_key="+RD_API_KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),keepalive:true}).catch(function(){});
       }
     }catch(x){}
+    leadEmail=em;
     $("state-form").hidden=true;$("state-ok").hidden=false;
   });
 })();
